@@ -21,6 +21,7 @@ import time
 import datetime
 import signal
 import json
+import traceback
 from bluepy.btle import Scanner, DefaultDelegate
 import devices
 import globals
@@ -58,7 +59,6 @@ class ScanDelegate(DefaultDelegate):
 				elif desc == 'Manufacturer':
 					manuf = value
 			for device in globals.COMPATIBILITY:
-				logging.debug(manuf)
 				if device().isvalid(name,manuf):
 					findDevice=True
 					logging.debug('This is a ' + device().name + ' device')
@@ -80,14 +80,14 @@ class ScanDelegate(DefaultDelegate):
 							logging.debug('It\'s a known packet and I don\'t known this device so I learn')
 							action['learn'] = 1
 							jeedom_com.add_changes('devices::'+action['id'],action)
+							jeedom_com.send_change_immediate({'learn_mode' : 0});
+							globals.LEARN_MODE = False
 							return
 					if 'rssi' not in globals.KNOWN_DEVICES[action['id']] or (globals.KNOWN_DEVICES[action['id']]['rssi']*1.1) > rssi or (globals.KNOWN_DEVICES[action['id']]['rssi']*0.9) < rssi:
 						globals.KNOWN_DEVICES[action['id']]['rssi'] = rssi
 						action['rssi'] = rssi
-
 					if len(action) > 2:
 						jeedom_com.add_changes('devices::'+action['id'],action)
-					
 			if not findDevice and globals.LEARN_MODE:
 				logging.debug('Unknown packet for ' + name + ' : ' + mac +  ' with rssi : ' + str(rssi) + ' and data ' + data)
 					
@@ -105,7 +105,7 @@ def listen(_device):
 			except Exception, e:
 				logging.error("Exception on socket : %s" % str(e))
 			try:
-				if globals.LEARN_MODE == True or (lastClearTimestamp + 55)  < int(time.time()) :
+				if globals.LEARN_MODE == True or (lastClearTimestamp + 19)  < int(time.time()) :
 					scanner.clear()
 					lastClearTimestamp = int(time.time())
 				scanner.start()
@@ -236,4 +236,5 @@ try:
 	listen(_device)
 except Exception,e:
 	logging.error('Fatal error : '+str(e))
+	logging.debug(traceback.format_exc())
 	shutdown()
