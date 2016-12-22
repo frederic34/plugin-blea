@@ -1,0 +1,43 @@
+{
+    "miscale": {
+        "name": "MiScale",
+        "groupe" : "Santé",
+		"configuration" : {
+			"specificmodal" : 1,
+			"specificclass" : 1,
+			"battery_type": "4x1.5V AA"
+		},
+        "commands": [
+			{
+                "name": "Dernier Poids",
+                "type": "info",
+                "subtype": "numeric",
+                "display": {
+                    "generic_type": "GENERIC"
+                },
+				"unite": "kg",
+                "isVisible": 1,
+                "logicalId": "poids",
+                "isHistorized": 0,
+                "template": {
+                    "mobile": "line",
+					"dashboard" : "line"
+				}
+			}
+        ],
+		"compatibility": [
+            {
+                "manufacturer": "Xiaomi",
+                "name": "MiScale",
+				"doc": "",
+				"type": "Scale",
+				"battery_type": "4x1.5V AA",
+				"ref" : "",
+				"comlink": "",
+				"remark": "Poids et unité",
+				"inclusion" : "Mode inclusion",
+				"imglink": "xiaomiscale"
+            }
+        ]
+    }
+}

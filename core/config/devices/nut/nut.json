@@ -3,35 +3,20 @@
         "name": "Nut",
         "groupe" : "Présence",
         "commands": [
-			{
-                "name": "Present",
-                "type": "info",
-                "subtype": "binary",
-                "display": {
-                    "generic_type": "GENERIC"
-                },
-                "isVisible": 0,
-                "isHistorized": 0,
-                "unite": "",
-                "logicalId": "present",
-                "configuration" : {
-                    "returnStateValue" : 0,
-                    "returnStateTime" : 1
-                }
-            },
-            {
-                "name": "Rssi",
-                "type": "info",
-                "subtype": "numeric",
-                "display": {
-                    "generic_type": "GENERIC"
-                },
-                "isVisible": 0,
-                "isHistorized": 0,
-                "unite": "dbm",
-                "logicalId": "rssi"
-            }
         ],
-		"compatibility": []
+		"compatibility": [
+            {
+                "manufacturer": "Nut",
+                "name": "Nut",
+				"doc": "",
+				"type": "Présence",
+				"battery_type": "1x3V CR2032",
+				"ref" : "",
+				"comlink": "",
+				"remark": "Uniquement pour de la présence",
+				"inclusion" : "Mode inclusion auto",
+				"imglink": "nut"
+            }
+        ]
     }
 }

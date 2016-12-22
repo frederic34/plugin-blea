@@ -32,6 +32,9 @@ $eqLogics = blea::byType('blea');
 			<th>{{Statut}}</th>
 			<th>{{Batterie}}</th>
 			<th>{{Rssi}}</th>
+			<th>{{Antenne Emission}}</th>
+			<th>{{Antenne Réception}}</th>
+			<th>{{Présent}}</th>
 			<th>{{Dernière communication}}</th>
 			<th>{{Date création}}</th>
 		</tr>
@@ -68,13 +71,85 @@ foreach ($eqLogics as $eqLogic) {
 		$battery_status = '<span class="label label-primary" style="font-size : 1em;" title="{{Secteur}}"><i class="fa fa-plug"></i></span>';
 	}
 	echo '<td>' . $battery_status . '</td>';
-	$rssi = '';
-	try {
-		$rssi = $eqLogic->getCmd(null, 'rssi')->execCmd() . ' dBm';
-	} catch (Exception $e) {
-
+	$rssi ='';
+	$remotes = blea_remote::all();
+	foreach ($remotes as $remote){
+		$name = $remote->getRemoteName();
+		$rssicmd = $eqLogic->getCmd('info', 'rssi' . $name);
+		if (is_object($rssicmd)) {
+			$rssiantenna = $rssicmd->execCmd();
+			$antennaname = $name;
+			$signalLevel = 'success';
+			if ($rssiantenna <= -150) {
+				$signalLevel = 'none';
+			}elseif ($rssiantenna <= -92) {
+				$signalLevel = 'danger';
+			} elseif ($rssiantenna <= -86) {
+				$signalLevel = 'warning';
+			} elseif ($rssiantenna <= -81) {
+				$signalLevel = 'yellow';
+			}
+			if ($signalLevel!='none' && $signalLevel!='yellow'){
+				$rssi = $rssi . '<span class="label label-'.$signalLevel.'" style="font-size : 0.9em;cursor:default;padding:0px 5px;">' . $rssiantenna .'dBm (' . ucfirst($antennaname) .')</span></br>';
+			} else if ($signalLevel=='yellow'){
+				$rssi = $rssi . '<span class="label" style="font-size : 0.9em;cursor:default;padding:0px 5px;background-color:#cccc00">' . $rssiantenna .'dBm (' . ucfirst($antennaname) .')</span></br>';
+			}
+		}	
 	}
-	echo '<td><span class="label label-info" style="font-size : 1em;cursor:default;">' . $rssi . '</span></td>';
+	$rssicmd = $eqLogic->getCmd('info', 'rssilocal');
+	if (is_object($rssicmd)) {
+		$rssiantenna = $rssicmd->execCmd();
+		$antennaname = 'local';
+		$signalLevel = 'success';
+			if ($rssiantenna <= -150) {
+				$signalLevel = 'none';
+			}elseif ($rssiantenna <= -92) {
+				$signalLevel = 'danger';
+			} elseif ($rssiantenna <= -86) {
+				$signalLevel = 'warning';
+			} elseif ($rssiantenna <= -81) {
+				$signalLevel = 'yellow';
+			}
+			
+		if ($signalLevel!='none' && $signalLevel!='yellow'){
+			$rssi = $rssi . '<span class="label label-'.$signalLevel.'" style="font-size : 0.9em;cursor:default;padding:0px 5px;">' . $rssiantenna .'dBm (' . ucfirst($antennaname) .')</span>';
+		} else if ($signalLevel=='yellow'){
+			$rssi = $rssi . '<span class="label" style="font-size : 0.9em;cursor:default;padding:0px 5px;background-color:#cccc00">' . $rssiantenna .'dBm (' . ucfirst($antennaname) .')</span>';
+		}
+	}
+	$antenna = $eqLogic->getConfiguration('antenna','local');
+	$antennareceive = $eqLogic->getConfiguration('antennareceive','local');
+	if ($antenna != 'local' && $antenna != 'all'){
+		$remote = blea_remote::byId($antenna);
+		$antenna = $remote->getRemoteName();
+	}
+	if ($antenna == 'all'){
+		$antenna = 'Tous';
+	}
+	if ($antennareceive != 'local' && $antennareceive != 'all'){
+		$remote = blea_remote::byId($antennareceive);
+		$antennareceive = $remote->getRemoteName();
+	}
+	if ($antennareceive == 'all'){
+		$antennareceive = 'Tous';
+	}
+	$present = 0;
+	$presentcmd = $eqLogic->getCmd('info', 'present');
+	if (is_object($presentcmd)) {
+		$present = $presentcmd->execCmd();
+	}
+	if (in_array($eqLogic->getConfiguration('device','') , array('niu'))){
+		$present =1;
+	}
+	if ($present == 1){
+		$present = '<span class="label label-success" style="font-size : 1em;" title="{{Présent}}"><i class="fa fa-check"></i></span>';
+	} else {
+		$present = '<span class="label label-danger" style="font-size : 1em;" title="{{Absent}}"><i class="fa fa-times"></i></span>';
+	}
+	echo '<td>' . $rssi . '</td>';
+	echo '<td><span class="label label-info" style="font-size : 1em;cursor:default;">' . ucfirst($antenna) . '</span></td>';
+	echo '<td><span class="label label-info" style="font-size : 1em;cursor:default;">' . ucfirst($antennareceive) . '</span></td>';
+	echo '<td>' . $present . '</td>';
 	echo '<td><span class="label label-info" style="font-size : 1em;cursor:default;">' . $eqLogic->getStatus('lastCommunication') . '</span></td>';
 	echo '<td><span class="label label-info" style="font-size : 1em;cursor:default;">' . $eqLogic->getConfiguration('createtime') . '</span></td></tr>';
 }

@@ -9,7 +9,7 @@ function sortByOption($a, $b) {
 	return strcmp($a['name'], $b['name']);
 }
 if (config::byKey('include_mode', 'blea', 0) == 1) {
-	echo '<div class="alert jqAlert alert-warning" id="div_inclusionAlert" style="margin : 0px 5px 15px 15px; padding : 7px 35px 7px 15px;">{{Vous etes en mode inclusion. Recliquez sur le bouton d\'inclusion pour sortir de ce mode}}</div>';
+	echo '<div class="alert jqAlert alert-warning" id="div_inclusionAlert" style="margin : 0px 5px 15px 15px; padding : 7px 35px 7px 15px;">{{Vous êtes en mode scan. Recliquez sur le bouton scan pour sortir de ce mode (sinon le mode restera actif une minute)}}</div>';
 } else {
 	echo '<div id="div_inclusionAlert"></div>';
 }
@@ -36,32 +36,17 @@ foreach ($eqLogics as $eqLogic) {
     <?php
 if (config::byKey('include_mode', 'blea', 0) == 1) {
 	echo '<div class="cursor changeIncludeState include card" data-mode="1" data-state="0" style="background-color : #8000FF; height : 140px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >';
-	echo '<center>';
-	echo '<i class="fa fa-sign-in fa-rotate-90" style="font-size : 6em;color:#94ca02;"></i>';
+	echo '<center class="includeicon">';
+	echo '<i class="fa fa-spinner fa-pulse" style="font-size : 6em;color:#94ca02;"></i>';
 	echo '</center>';
-	echo '<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#94ca02"><center>{{Arrêter inclusion}}</center></span>';
+	echo '<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#94ca02"><center>{{Arrêter Scan}}</center></span>';
 	echo '</div>';
 } else {
 	echo '<div class="cursor changeIncludeState include card" data-mode="1" data-state="1" style="background-color : #ffffff; height : 140px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >';
-	echo '<center>';
-	echo '<i class="fa fa-sign-in fa-rotate-90" style="font-size : 6em;color:#94ca02;"></i>';
+	echo '<center class="includeicon">';
+	echo '<i class="fa fa-bullseye" style="font-size : 6em;color:#94ca02;"></i>';
 	echo '</center>';
-	echo '<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#94ca02"><center>{{Mode inclusion}}</center></span>';
-	echo '</div>';
-}
-if (config::byKey('exclude_mode', 'blea', 0) == 1) {
-	echo '<div class="cursor changeIncludeState exclude card" data-mode="0" data-state="0" style="background-color : #8000FF; height : 140px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >';
-	echo '<center>';
-	echo '<i class="fa fa-sign-out fa-rotate-90" style="font-size : 6em;color:#FA5858;"></i>';
-	echo '</center>';
-	echo '<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#94ca02"><center>{{Arrêter exclusion}}</center></span>';
-	echo '</div>';
-} else {
-	echo '<div class="cursor changeIncludeState exclude card" data-mode="0" data-state="1" style="background-color : #ffffff; height : 140px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >';
-	echo '<center>';
-	echo '<i class="fa fa-sign-out fa-rotate-90" style="font-size : 6em;color:#FA5858;"></i>';
-	echo '</center>';
-	echo '<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#FA5858"><center>{{Mode exclusion}}</center></span>';
+	echo '<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#94ca02"><center>{{Lancer Scan}}</center></span>';
 	echo '</div>';
 }
 ?>
@@ -77,6 +62,18 @@ if (config::byKey('exclude_mode', 'blea', 0) == 1) {
     </center>
     <span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676"><center>{{Santé}}</center></span>
   </div>
+  <div class="cursor" id="bt_graphblea" style="background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
+	<center>
+	<i class="fa fa-asterisk" style="font-size : 6em;color:#767676;"></i>
+	</center>
+	<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676"><center>{{Réseau}}</center></span>
+	</div>
+  <div class="cursor" id="bt_remoteblea" style="background-color : #ffffff; height : 120px;margin-bottom : 10px;padding : 5px;border-radius: 2px;width : 160px;margin-left : 10px;" >
+	<center>
+	<i class="fa fa-bluetooth" style="font-size : 6em;color:#767676;"></i>
+	</center>
+	<span style="font-size : 1.1em;position:relative; top : 15px;word-break: break-all;white-space: pre-wrap;word-wrap: break-word;color:#767676"><center>{{Antennes}}</center></span>
+	</div>
 </div>
 <legend><i class="fa fa-table"></i>  {{Mes devices Blea}}</legend>
 <div class="eqLogicThumbnailContainer">
@@ -105,7 +102,6 @@ foreach ($eqLogics as $eqLogic) {
  <a class="btn btn-success eqLogicAction pull-right" data-action="save"><i class="fa fa-check-circle"></i> {{Sauvegarder}}</a>
  <a class="btn btn-danger eqLogicAction pull-right" data-action="remove"><i class="fa fa-minus-circle"></i> {{Supprimer}}</a>
  <a class="btn btn-default eqLogicAction pull-right" data-action="configure"><i class="fa fa-cogs"></i> {{Configuration avancée}}</a>
- <a class="btn btn-default eqLogicAction pull-right" data-action="copy"><i class="fa fa-files-o"></i> {{Dupliquer}}</a>
  <ul class="nav nav-tabs" role="tablist">
   <li role="presentation"><a href="#" class="eqLogicAction" aria-controls="home" role="tab" data-toggle="tab" data-action="returnToThumbnailDisplay"><i class="fa fa-arrow-circle-left"></i></a></li>
   <li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab"><i class="fa fa-tachometer"></i> {{Equipement}}</a></li>
@@ -164,18 +160,61 @@ foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
 
            </div>
          </div>
-         <div class="form-group expertModeVisible">
-          <label class="col-sm-3 control-label">{{Délai maximum autorisé entre 2 messages (min)}}</label>
-          <div class="col-sm-4">
-            <input class="eqLogicAttr form-control" data-l1key="timeout" />
+		 <div class="form-group">
+				<label class="col-sm-3 control-label help" data-help="{{Antenne qui prendra les infos, attention ne pas mettre sur les devices de type boutons pour éviter la répétition des infos (sauf si c'est ce que vous souhaitez). Cependant presence et rssi sera systematiquement pris en compte par toutes les antennes.}}">{{Antenne de réception}}</label>
+              <div class="col-sm-3">
+                <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="antennareceive">
+                <option value="local">{{Local}}</option>
+				<?php
+				try{
+					$hasblea = plugin::byId('blea');
+					} catch (Exception $e) {
+				}
+				if ($hasblea != '' && $hasblea->isActive()){
+					$remotes = blea_remote::all();
+					foreach ($remotes as $remote) {
+						echo '<option value="' . $remote->getId() . '">{{Remote : ' . $remote->getRemoteName() .'}}</option>';
+					}
+				}
+				?>
+				<option value="all">{{Tous}}</option>
+              </select>
+            </div>
+			 <div class="form-group refreshdelay" style="display:none">
+				<label class="col-sm-3 control-label help" data-help="{{Inutile de mettre des valeurs trop faible, si les valeurs sont identiques aux précédentes il n'y aura pas de mise à jour}}">{{Refresh des infos (en s)}}</label>
+				<div class="col-sm-3">
+				<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="delay" placeholder="Delai en secondes"/>
+				</div>
+			</div>
+			
+		</div>
+		<div class="form-group cancontrol" style="display:none">
+				<label class="col-sm-3 control-label help" data-help="{{Utile pour savoir qu'elle antenne contrôllera l'équipement. Choisir tous aura la conséquence de déclencher potentiellement l'action autant de fois qu'il y a d'antennes}}">{{Antenne d'émission}}</label>
+              <div class="col-sm-3">
+                <select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="antenna">
+                <option value="local">{{Local}}</option>
+				<?php
+				try{
+					$hasblea = plugin::byId('blea');
+					} catch (Exception $e) {
+				}
+				if ($hasblea != '' && $hasblea->isActive()){
+					$remotes = blea_remote::all();
+					foreach ($remotes as $remote) {
+						echo '<option value="' . $remote->getId() . '">{{Remote : ' . $remote->getRemoteName() .'}}</option>';
+					}
+				}
+				?>
+				<option value="all">{{Tous}}</option>
+              </select>
+            </div>
+			<div class="form-group canbelocked" style="display:none">
+				<label class="col-sm-3 control-label help" data-help="{{Essaiera de garder la connection avec l'appareil (pour les appareils lent a se connecter). Attention une fois une connection ouverte certains appareils ne sont plus visibles. Si Tous est sélectionné cette option ne sera pas utilisé. Evitez absolument cette option sur des devices fonctionnant sur batterie}}">{{Garder la connection}}</label>
+				<div class="col-sm-3">
+				 <label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="islocked" />
+				</div>
+			</div>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="col-sm-3 control-label">{{Commentaire}}</label>
-          <div class="col-sm-8">
-            <textarea class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="commentaire" ></textarea>
-          </div>
-        </div>
       </fieldset>
     </form>
   </div>
@@ -183,10 +222,12 @@ foreach (jeedom::getConfiguration('eqLogic:category') as $key => $value) {
     <form class="form-horizontal">
       <fieldset>
        <div class="form-group">
+        <label class="col-sm-2 control-label"></label>
         <div class="col-sm-8">
-         <a class="btn btn-primary btn-xs pull-right paramDevice" id="bt_configureDevice" style="display:none"><i class="fa fa-wrench"></i> {{Configuration des paramètres}}</a>
-       </div>
-     </div>
+          <a class="btn btn-danger" id="bt_autoDetectModule"><i class="fa fa-search" title="{{Recréer les commandes}}"></i>  {{Recréer les commandes}}</a>
+		  <a class="btn btn-warning specificmodal" id="bt_specificmodal" style="display:none"><i class="fa fa-cogs"></i> {{Configuration spécifique}}</a>
+          </div>
+        </div>
      <div class="form-group">
       <label class="col-sm-2 control-label">{{Equipement}}</label>
       <div class="col-sm-8">
@@ -250,6 +291,8 @@ foreach ($groups as $group) {
 </center>
 </fieldset>
 </form>
+</br>
+<div class="alert alert-info globalRemark" style="display:none"></div>
 </div>
 </div>
 

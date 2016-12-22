@@ -27,8 +27,31 @@ try {
 	ajax::init();
 
 	if (init('action') == 'changeIncludeState') {
-		log::add('blea','debug',init('state').init('mode'));
 		blea::changeIncludeState(init('state'), init('mode'));
+		ajax::success();
+	}
+	
+	if (init('action') == 'getMobileGraph') {
+		ajax::success(blea::getMobileGraph());
+	}
+	
+	if (init('action') == 'getMobileHealth') {
+		ajax::success(blea::getMobileHealth());
+	}
+	
+	if (init('action') == 'saveAntennaPosition') {
+		ajax::success(blea::saveAntennaPosition(init('antennas')));
+	}
+	
+	if (init('action') == 'autoDetectModule') {
+		$eqLogic = blea::byId(init('id'));
+		if (!is_object($eqLogic)) {
+			throw new Exception(__('Blea eqLogic non trouvé : ', __FILE__) . init('id'));
+		}
+		foreach ($eqLogic->getCmd() as $cmd) {
+			$cmd->remove();
+		}
+		$eqLogic->applyModuleConfiguration();
 		ajax::success();
 	}
 	
@@ -66,6 +89,42 @@ try {
 		}
 		$blea_remote->remove();
 		ajax::success();
+	}
+	
+	if (init('action') == 'sendRemoteFiles') {
+        ajax::success(blea::sendRemoteFiles(init('remoteId')));
+     }
+	 
+	 if (init('action') == 'getRemoteLog') {
+        ajax::success(blea::getRemoteLog(init('remoteId')));
+     }
+	 
+	 if (init('action') == 'getRemoteLogDependancy') {
+        ajax::success(blea::getRemoteLog(init('remoteId'),'_dependancy'));
+     }
+	 
+	 if (init('action') == 'launchremote') {
+        ajax::success(blea::launchremote(init('remoteId')));
+     }
+	 
+	 if (init('action') == 'stopremote') {
+        ajax::success(blea::stopremote(init('remoteId')));
+     }
+	 
+	 if (init('action') == 'remotelearn') {
+        ajax::success(blea::remotelearn(init('remoteId'), init('state')));
+     }
+	 
+	 if (init('action') == 'dependancyRemote') {
+        ajax::success(blea::dependancyRemote(init('remoteId')));
+     }
+	 
+	 if (init('action') == 'aliveremote') {
+        ajax::success(blea::aliveremote(init('remoteId')));
+     }
+	
+	if (init('action') == 'changeLogLive') {
+		ajax::success(blea::changeLogLive(init('level')));
 	}
 
 	throw new Exception('Aucune methode correspondante');
