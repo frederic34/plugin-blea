@@ -1,13 +1,13 @@
 {
-    "miflora": {
-        "name": "Miflora",
-        "groupe" : "Plante",
+    "hector": {
+        "name": "Hector",
+		"groupe" : "Capteurs",
 		"configuration" : {
 			"needsrefresh" : 1,
-			"name" : "miflora",
-			"battery_type" : "1x3V CR2032",
+			"cancontrol" : 1,
+			"name" : "hector",
 			"delay" : 18000,
-			"cancontrol" : 1
+			"battery_type" : "1x3V CR2032"
 		},
         "commands": [
 			{
@@ -38,14 +38,14 @@
                 "isVisible": 1,
                 "isHistorized": 0,
                 "unite": "%",
-                "logicalId": "moisture",
+                "logicalId": "humidity",
 				"template": {
 					"dashboard": "line",
 					"mobile": "line"
 				}
             },
 			{
-                "name": "Luminosité",
+                "name": "Pression",
                 "type": "info",
                 "subtype": "numeric",
                 "display": {
@@ -54,25 +54,8 @@
 				},
                 "isVisible": 1,
                 "isHistorized": 0,
-                "unite": "lux",
-                "logicalId": "sunlight",
-				"template": {
-					"dashboard": "line",
-					"mobile": "line"
-				}
-            },
-			{
-                "name": "Fertilisant",
-                "type": "info",
-                "subtype": "numeric",
-                "display": {
-					"icon": "<i class=\"fa fa-leaf\"><\/i>",
-					"generic_type": "DONT"
-				},
-                "isVisible": 1,
-                "isHistorized": 0,
-                "unite": "uS/cm",
-                "logicalId": "fertility",
+                "unite": "bar",
+                "logicalId": "pressure",
 				"template": {
 					"dashboard": "line",
 					"mobile": "line"
@@ -96,18 +79,6 @@
 				}
             },
 			{
-                "name": "Firmware",
-                "type": "info",
-                "subtype": "string",
-                "display": {
-                    "generic_type": "GENERIC"
-                },
-                "isVisible": 0,
-                "isHistorized": 0,
-                "unite": "",
-                "logicalId": "firmware"
-            },
-            {
                 "name": "Refresh",
                 "type": "action",
                 "subtype": "other",
@@ -122,16 +93,16 @@
         ],
 		"compatibility": [
             {
-                "manufacturer": "Xiaomi",
-                "name": "Miflora",
+                "manufacturer": "Hector",
+                "name": "Hector",
 				"doc": "",
 				"type": "Capteurs",
 				"battery_type": "1x3V CR2032",
 				"ref" : "",
 				"comlink": "",
-				"remark": "Capteurs de plantes",
+				"remark": "",
 				"inclusion" : "Mode inclusion",
-				"imglink": "miflora"
+				"imglink": "hector"
             }
         ]
     }

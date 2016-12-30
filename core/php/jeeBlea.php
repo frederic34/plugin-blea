@@ -51,7 +51,7 @@ if (isset($result['learn_mode'])) {
 
 if (isset($result['started'])) {
 	if ($result['started'] == 1) {
-		log::add('blea','info','Antenna ' . $name . ' alive sending known devices');
+		log::add('blea','info','Antenna ' . $result['source'] . ' alive sending known devices');
 		if ($result['source'] != 'local'){
 			$remotes = blea_remote::all();
 			foreach ($remotes as $remote){
@@ -236,7 +236,7 @@ if (isset($result['devices'])) {
 				$remote = blea_remote::byId($antennaId);
 				$antenna = $remote->getRemoteName();
 			}
-			if ($logicalId != 'present' && $antenna != 'all' && $antenna != $datas['source']){
+			if ($logicalId != 'present' && $antennaId != 'all' && $antenna != $datas['source']){
 				log::add('blea','debug','Ignoring this antenna (' . $datas['source'] . ' only allowed ' . $antenna .') must not trigger events except for presence and rssi : ' . $logicalId );
 				continue;
 			}

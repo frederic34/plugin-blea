@@ -1,78 +1,63 @@
 {
-    "miflora": {
-        "name": "Miflora",
-        "groupe" : "Plante",
+    "mibandcolor": {
+        "name": "MibandColor",
+		"groupe" : "Santé",
 		"configuration" : {
 			"needsrefresh" : 1,
-			"name" : "miflora",
-			"battery_type" : "1x3V CR2032",
+			"name" : "miband",
+			"battery_type" : "Batterie",
 			"delay" : 18000,
 			"cancontrol" : 1
 		},
         "commands": [
 			{
-                "name": "Température",
+                "name": "Nombre de pas",
                 "type": "info",
                 "subtype": "numeric",
-                "display": {
-                    "icon": "<i class=\"fa fa-thermometer-empty\"><\/i>",
-					"generic_type": "DONT"
-                },
                 "isVisible": 1,
                 "isHistorized": 0,
-                "unite": "°C",
-                "logicalId": "temperature",
+                "logicalId": "steps",
+                "unite": "pas",
+				"template": {
+					"dashboard": "line",
+					"mobile": "line"
+				},
+				"display": {
+					"icon": "<i class=\"icon loisir-runner5\"><\/i>",
+					"generic_type": "DONT"
+				}
+            },
+			{
+                "name": "Nombre de charges",
+                "type": "info",
+                "subtype": "numeric",
+                "isVisible": 1,
+                "isHistorized": 0,
+                "logicalId": "cycle",
 				"template": {
 					"dashboard": "line",
 					"mobile": "line"
 				}
             },
 			{
-                "name": "Humidité",
+                "name": "Statut",
                 "type": "info",
-                "subtype": "numeric",
-                "display": {
-					"icon": "<i class=\"fa fa-tint\"><\/i>",
-					"generic_type": "DONT"
-				},
+                "subtype": "string",
                 "isVisible": 1,
                 "isHistorized": 0,
-                "unite": "%",
-                "logicalId": "moisture",
+                "logicalId": "status",
 				"template": {
 					"dashboard": "line",
 					"mobile": "line"
 				}
             },
 			{
-                "name": "Luminosité",
+                "name": "Dernière charge",
                 "type": "info",
-                "subtype": "numeric",
-                "display": {
-					"icon": "<i class=\"fa fa-sun-o\"><\/i>",
-					"generic_type": "DONT"
-				},
+                "subtype": "string",
                 "isVisible": 1,
                 "isHistorized": 0,
-                "unite": "lux",
-                "logicalId": "sunlight",
-				"template": {
-					"dashboard": "line",
-					"mobile": "line"
-				}
-            },
-			{
-                "name": "Fertilisant",
-                "type": "info",
-                "subtype": "numeric",
-                "display": {
-					"icon": "<i class=\"fa fa-leaf\"><\/i>",
-					"generic_type": "DONT"
-				},
-                "isVisible": 1,
-                "isHistorized": 0,
-                "unite": "uS/cm",
-                "logicalId": "fertility",
+                "logicalId": "lastcharge",
 				"template": {
 					"dashboard": "line",
 					"mobile": "line"
@@ -86,7 +71,7 @@
 					"icon": "<i class=\"fa fa-battery-full\"><\/i>",
 					"generic_type": "DONT"
 				},
-                "isVisible": 0,
+                "isVisible": 1,
                 "isHistorized": 0,
                 "unite": "%",
                 "logicalId": "battery",
@@ -102,10 +87,32 @@
                 "display": {
                     "generic_type": "GENERIC"
                 },
-                "isVisible": 0,
+                "isVisible": 1,
                 "isHistorized": 0,
                 "unite": "",
                 "logicalId": "firmware"
+            },
+			{
+                "name": "Vibration",
+                "type": "action",
+                "subtype": "other",
+                "isVisible": 1,
+                "logicalId": "name:miband,handle:0x51,value:04",
+				"display": {
+					"icon": "<i class=\"fa fa-rss\"><\/i>",
+					"generic_type": "DONT"
+				}
+            },
+			{
+                "name": "Vibration + Led",
+                "type": "action",
+                "subtype": "other",
+                "isVisible": 1,
+                "logicalId": "name:miband,handle:0x51,value:01",
+				"display": {
+					"icon": "<i class=\"icon jeedom-alerte\"><\/i>",
+					"generic_type": "DONT"
+				}
             },
             {
                 "name": "Refresh",
@@ -123,15 +130,15 @@
 		"compatibility": [
             {
                 "manufacturer": "Xiaomi",
-                "name": "Miflora",
+                "name": "Miband (avec led couleur)",
 				"doc": "",
-				"type": "Capteurs",
+				"type": "Santé",
 				"battery_type": "1x3V CR2032",
 				"ref" : "",
 				"comlink": "",
-				"remark": "Capteurs de plantes",
+				"remark": "Selon les firmwares peut ne plus fonctionner. Attention si le bracelet est connecté à votre smartphone il est plus visible en bluetooth",
 				"inclusion" : "Mode inclusion",
-				"imglink": "miflora"
+				"imglink": "mibandcolor"
             }
         ]
     }
