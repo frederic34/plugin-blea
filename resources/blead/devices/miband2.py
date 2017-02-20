@@ -16,6 +16,7 @@ except:
 class Miband2():
 	def __init__(self):
 		self.name = 'miband2'
+		self.ignoreRepeat = False
 
 	def isvalid(self,name,manuf=''):
 		if name.lower() in ['mi band 2','mi2a',self.name]:
